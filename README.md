@@ -1,1 +1,1 @@
-# CSCI-317_Computation-for-Scientific-Applications_Project-And-Labs
+# CSCI-317 Computation for Scientific Applications Project And Labs
