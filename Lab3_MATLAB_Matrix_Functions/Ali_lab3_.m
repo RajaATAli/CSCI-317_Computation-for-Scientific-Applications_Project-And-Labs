@@ -39,6 +39,20 @@ distances = [
 cityNames = {'Brantford', 'Collingwood', 'Elora', 'Fort Erie', 'Goderich', 'Grand Bend', 'Hamilton', 'Kitchener-Waterloo'};
 cityMap = containers.Map(cityNames, 1:length(cityNames));
 
+% Travelling Menu Display
+
+fprintf('Welcome to Ontario Pathfinder!\n');
+fprintf('Below are the cities available for your journey:\n\n');
+
+% Loop through the cityNames array and display each city
+for i = 1:length(cityNames)
+    fprintf('%d. %s\n', i, cityNames{i});
+end
+
+fprintf('\nPlease enter the names of your start and end cities exactly as shown above.\n');
+
+
+
 % Prompt user for start and end cities
 startCityName = input('Enter the name of the start city: ', 's');
 endCityName = input('Enter the name of the end city: ', 's');
@@ -89,7 +103,7 @@ function [shortestDistance, path] = dijkstraAlgorithm(distMatrix, startCity, end
     distance = inf(1,numCities);
 
     % previous tracks the previous node in the optimal path from start city
-    previous = -ones(1,numCities)
+    previous = -ones(1,numCities);
 
 
     % Setting the distance of the start city to 0
@@ -133,6 +147,7 @@ function [shortestDistance, path] = dijkstraAlgorithm(distMatrix, startCity, end
     while endCity ~= -1
         path = [endCity path];
         endCity = previous(endCity);
-
     end
+    % Debugging step to check if previous is being updated correctly
+    % disp(previous);
 end
