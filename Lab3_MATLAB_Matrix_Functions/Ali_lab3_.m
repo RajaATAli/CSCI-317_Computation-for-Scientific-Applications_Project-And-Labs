@@ -80,74 +80,60 @@ fprintf('Path: %s\n', strjoin(pathNames, ' -> '));
 % User-Defined function for Dijkstra's algorithm
 % Implement Dijkstra's algorithm here
 % Output the shortest distance and the path taken
-function [shortestDistance, path] = dijkstraAlgorithm(distMatrix, startCity, endCity)
-
-
-    % Initialize variables to keep track of visited nodes, the shortest
-    % distance discovered (infinity for all nodes except the start/source 
-    % node which is zero), and an array to remember predecessors of each 
-    % node for path reconstruction
-
-    % Number of cities - which are all the nodes
-    %distMatrix(i,j) is the distance from city 'i' to city 'j'
-    % The following function returns the total number of rows in the matrix
+function [shortestDistance, pathIndices] = dijkstraAlgorithm(distMatrix, startCity, endCity)
     numCities = size(distMatrix, 1);
-
-    % Creating an array of false logical values which represents that
-    % initially no city has been visited
-    visited = false(1, numCities); 
-
-    % Setting all distances to initially infinity in array
-    % This array will be used to store the shortest known distance from the
-    % start city to every other city
-    distance = inf(1,numCities);
-
-    % previous tracks the previous node in the optimal path from start city
-    previous = -ones(1,numCities);
-
-
-    % Setting the distance of the start city to 0
+    visited = false(1, numCities);
+    distance = inf(1, numCities);
+    prev = -ones(1, numCities); % Initialize with -1 for no predecessor
+    
     distance(startCity) = 0;
-
-    % Using a nested for loop to iteratively update the shortest path from
-    % the source node to all other nodes in the graph
-    % Key Concept (Relaxation):
-    % * if (d[u] + c(u,v) < d[v])
-    %       d[v] = d[u] + c(u,v)
-
-    % Iterating over all cities/nodes
+    
     for i = 1:numCities
-        % Finding the unvisited node with the minimum distance
-        [~, u] = min(distance + visited * max(distance));
-        % Marking the selected node as visited
+        % Find the unvisited node with the smallest distance
+        minDistance = inf;
+        u = -1;
+        for j = 1:numCities
+            if ~visited(j) && distance(j) <= minDistance
+                minDistance = distance(j);
+                u = j;
+            end
+        end
+        
+        % If no node was found (isolated or remaining nodes are unreachable), break the loop
+        if u == -1
+            break;
+        end
+        
         visited(u) = true;
-
-        % Inner loop to explore the neighbours of u
+        
+        % If the destination node is reached, break the loop
+        if u == endCity
+            break;
+        end
+        
+        % Update the distance for each neighbor of u
         for v = 1:numCities
-            % Condition to checked unvisited neighbors and +ve distances
-            if ~visited(v) && distMatrix(u,v) > 0
-                % Now, calculate the alt distance path accordingly
+            if distMatrix(u, v) > 0 && ~visited(v)
                 alt = distance(u) + distMatrix(u, v);
-                % If the new distance (alt) is shorter than the current
-                % known shortest distance to v then update to this new
-                % shorter distance and set u as the predecessor of v
                 if alt < distance(v)
                     distance(v) = alt;
-                    previous(v) = u;
+                    prev(v) = u;
                 end
             end
         end
     end
-
-    % Now, reconstruct the shortest path in reverse order by following
-    % previous array from the end city back to the start city
-
-    shortestDistance = distance(endCity);
-    path = [];
-    while endCity ~= -1
-        path = [endCity path];
-        endCity = previous(endCity);
+    
+    % Reconstruct path and calculate shortest distance
+    if distance(endCity) == inf
+        shortestDistance = inf;
+        pathIndices = 'No path found';
+    else
+        shortestDistance = distance(endCity);
+        pathIndices = [];
+        u = endCity;
+        while u ~= -1
+            pathIndices = [u, pathIndices];
+            u = prev(u);
+        end
     end
-    % Debugging step to check if previous is being updated correctly
-    % disp(previous);
 end
