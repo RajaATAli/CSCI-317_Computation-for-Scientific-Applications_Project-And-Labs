@@ -40,60 +40,92 @@ cityNames = {'Brantford', 'Collingwood', 'Elora', 'Fort Erie', 'Goderich', 'Gran
 cityMap = containers.Map(cityNames, 1:length(cityNames));
 
 % Travelling Menu Display
-
-fprintf('Welcome to Ontario Pathfinder!\n');
-fprintf('Below are the cities available for your journey:\n\n');
-
-% Loop through the cityNames array and display each city
-for i = 1:length(cityNames)
-    fprintf('%d. %s\n', i, cityNames{i});
-end
-
-fprintf('\nPlease enter the names of your start and end cities exactly as shown above.\n');
-
-
-
-% Prompt user for start and end cities
-startCityName = input('Enter the name of the start city: ', 's');
-endCityName = input('Enter the name of the end city: ', 's');
-
-% Convert city names to indices
-startCity = cityMap(startCityName);
-endCity = cityMap(endCityName);
+% Get user input for start and end cities
+[startCity, endCity] = getUserInput(cityNames, cityMap);
 
 
 % Call the Dijkstra's algorithm function with the distance matrix and city indices
 [shortestDistance, pathIndices] = dijkstraAlgorithm(distances, startCity, endCity);
 
 % Convert path indices back to city names
-pathNames = cityNames(pathIndices);
-
+if isequal(pathIndices, 'No path found')
+    pathNames = pathIndices;
+else
+    pathNames = cell(1, length(pathIndices)); % Initialize an empty cell array for path names
+    for i = 1:length(pathIndices)
+        pathNames{i} = cityNames{pathIndices(i)}; % Convert each index to its corresponding city name
+    end
+end
 
 % Display the shortest distance and the path to the user
-% Display the shortest distance
-fprintf('\nThe shortest distance from %s to %s is: %.2f km\n', startCityName, endCityName, shortestDistance);
+fprintf('\nThe shortest distance from %s to %s is: %.1f km\n', cityNames{startCity}, cityNames{endCity}, shortestDistance);
+if iscell(pathNames) % If pathNames is a cell array, a path was found
+    fprintf('Path: %s\n', strjoin(pathNames, ' -> '));
+else
+    fprintf('%s\n', pathNames); % If pathNames is not a cell array, it's the 'No path found' message
+end
 
-% Display the path
-fprintf('Path: %s\n', strjoin(pathNames, ' -> '));
+
+% User-Defined Function to handle user input
+function [startCity, endCity] = getUserInput(cityNames, cityMap)
+    fprintf('Welcome to Ontario Pathfinder!\n');
+    fprintf('Below are the cities available for your journey:\n\n');
+    
+    % For loop to display each of the city names
+    for i = 1:length(cityNames)
+        fprintf('%d. %s\n', i, cityNames{i});
+    end
+    
+    fprintf('\nPlease enter the names of your start and end cities exactly as shown above.\n');
+    
+    startCityName = input('Enter the name of the start city: ', 's');
+    endCityName = input('Enter the name of the end city: ', 's');
+    
+    startCity = cityMap(startCityName);
+    endCity = cityMap(endCityName);
+end
+
 
 
 % User-Defined function for Dijkstra's algorithm
 % Implement Dijkstra's algorithm here
 % Output the shortest distance and the path taken
 function [shortestDistance, pathIndices] = dijkstraAlgorithm(distMatrix, startCity, endCity)
+    % 1. Initialize variables to keep track of visited nodes, the shortest
+    % distance discovered (infinity for all nodes except the start/source 
+    % node which is zero), and an array to remember predecessors of each 
+    % node for path reconstruction
+
+    % Number of cities - which are all the nodes
+    %distMatrix(i,j) is the distance from city 'i' to city 'j'
+    % The following function returns the total number of rows in the matrix
     numCities = size(distMatrix, 1);
+
+    % Creating an array of false logical values which represents that
+    % initially no city has been visited
     visited = false(1, numCities);
+
+    % Setting all distances to initially infinity in array
+    % This array will be used to store the shortest known distance from the
+    % start city to every other city
     distance = inf(1, numCities);
+
+    % previous tracks the previous node in the optimal path from start city
     prev = -ones(1, numCities); % Initialize with -1 for no predecessor
     
+    % Setting the distance of the start city to 0
     distance(startCity) = 0;
     
+    % This part is used for node selection -  smallest distance from the 
+    % start node
     for i = 1:numCities
         % Find the unvisited node with the smallest distance
-        minDistance = inf;
-        u = -1;
+        minDistance = inf; % Represents smallest distance found in the iteration
+        u = -1; % Index of node of smallest distance
+        % Iterating through all nodes
         for j = 1:numCities
             if ~visited(j) && distance(j) <= minDistance
+                % Update the distance and index of the node
                 minDistance = distance(j);
                 u = j;
             end
@@ -112,6 +144,9 @@ function [shortestDistance, pathIndices] = dijkstraAlgorithm(distMatrix, startCi
         end
         
         % Update the distance for each neighbor of u
+        % Relaxation is a key concept here:
+        % if (d[u] + c(u,v) < d[v])
+        % d[v] = d[u] + c(u,v)
         for v = 1:numCities
             if distMatrix(u, v) > 0 && ~visited(v)
                 alt = distance(u) + distMatrix(u, v);
@@ -128,6 +163,7 @@ function [shortestDistance, pathIndices] = dijkstraAlgorithm(distMatrix, startCi
         shortestDistance = inf;
         pathIndices = 'No path found';
     else
+        % We essentially trace back through the previous array
         shortestDistance = distance(endCity);
         pathIndices = [];
         u = endCity;
