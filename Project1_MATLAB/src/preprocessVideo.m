@@ -1,29 +1,21 @@
-function preprocessVideo(videoDevice, model)
-    figure; % Create a new figure for displaying video frames
+% preprocessVideo.m
+function preprocessVideo(videoDevice, detector, classificationModel)
+    figure; % Create a figure for displaying video frames
     while true
-        frame = snapshot(videoDevice); % Capture one frame from webcam
-        processedFrame = preprocessData(frame); % Apply preprocessing defined earlier
+        frame = snapshot(videoDevice); % Capture a frame from the webcam
         
-        % Use the model to classify the processed frame
-        label = classifyObjects(processedFrame, model);
+        % Detect objects using YOLO v3 object detector
+        [bboxes, scores, labels] = detect(detector, frame);
         
-        % Display the frame
-        imshow(frame);
-        hold on; % Hold on to overlay graphics on the image
-        
-        % Optional: Highlight the frame or add text based on the label
-        if strcmp(char(label), 'Recyclable')
-            rectangle('Position', [0, 0, size(frame, 2), size(frame, 1)], 'EdgeColor', 'g', 'LineWidth', 2);
-            text(10, 20, char(label), 'Color', 'green', 'FontSize', 12, 'FontWeight', 'bold');
-        else % Non-recyclable or other categories
-            rectangle('Position', [0, 0, size(frame, 2), size(frame, 1)], 'EdgeColor', 'r', 'LineWidth', 2);
-            text(10, 20, char(label), 'Color', 'red', 'FontSize', 12, 'FontWeight', 'bold');
+        for i = 1:size(bboxes,1)
+            croppedImage = imcrop(frame, bboxes(i,:)); % Crop detected object
+            processedImage = preprocessForClassification(croppedImage); % Preprocess image
+            [label, score] = classify(classificationModel, processedImage); % Classify object
+            frame = insertObjectAnnotation(frame, 'rectangle', bboxes(i,:), string(label)); % Annotate frame
         end
         
-        hold off; % Release the hold to update the figure with the next frame
-        
-        % Break the loop with a condition or key press if necessary
-        pause(0.05); % Small pause to limit the speed of execution
+        imshow(frame); % Display the frame
+        pause(0.05); % Short pause
     end
 end
 
