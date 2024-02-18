@@ -10,6 +10,7 @@ function testModel(model, testData)
     % Confusion matrix
     figure;
     confusionchart(actualLabels, predictedLabels);
+    saveas(gcf, '../results/confusionMatrix.png');
     title('Confusion Matrix');
     
     % Calculate additional performance metrics
@@ -29,6 +30,8 @@ function testModel(model, testData)
     ylabel('Precision');
     title('Precision-Recall Curve');
     grid on;
+    saveas(gcf, '../results/precisionRecallCurve.png');
+
    
 
     % Accuracy vs. Label Frequency Graph
@@ -51,6 +54,8 @@ function testModel(model, testData)
     title('Accuracy vs. Label Frequency');
     grid on;
     legend('Frequency', 'Accuracy', 'Location', 'best');
+    saveas(gcf, '../results/accuracyVsLabelFrequency.png');
+
 
 
     % Visualization of some classified images
@@ -67,6 +72,7 @@ function testModel(model, testData)
             figure;
             imshow(img);
             title(['Predicted: ' char(predictedLabel) ', Actual: ' char(actualLabel)]);
+            saveas(gcf, sprintf('../results/classifiedImage_%d_%s.png', idx, char(predictedLabel)));
         end
     end
 end
