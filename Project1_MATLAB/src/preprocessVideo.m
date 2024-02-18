@@ -9,7 +9,7 @@ function preprocessVideo(videoDevice, detector, classificationModel)
         
         for i = 1:size(bboxes,1)
             croppedImage = imcrop(frame, bboxes(i,:)); % Crop detected object
-            processedImage = preprocessForClassification(croppedImage); % Preprocess image
+            processedImage = preprocessData(croppedImage); % Preprocess image
             [label, score] = classify(classificationModel, processedImage); % Classify object
             frame = insertObjectAnnotation(frame, 'rectangle', bboxes(i,:), string(label)); % Annotate frame
         end
