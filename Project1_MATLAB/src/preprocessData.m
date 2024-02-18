@@ -1,13 +1,15 @@
 function imgOut = preprocessData(img)
-    % Resize image
+    % Resize image input to 224x224 pixels
+    % We need a equal size of images to train the model
     imgOut = imresize(img, [224 224]);
 
-    % Ensure image is in RGB
+    % Ensure image is in RGB - requirement for CNN model
     if size(imgOut, 3) == 1
         imgOut = repmat(imgOut, [1 1 3]);
     end
 
     % Normalize pixel values (for RGB, this step is applied per channel)
+    % Necessary for better performance in deep learning models
     imgOut = double(imgOut) / 255;
 end
 

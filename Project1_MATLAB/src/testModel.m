@@ -1,16 +1,19 @@
 function testModel(model, testData)
-    % Evaluating the model
+    % Evaluating the model using TEST dataset
     predictedLabels = classify(model, testData);
     actualLabels = testData.Labels;
     
-    % Calculating accuracy
+    % Calculating accuracy on TEST datast
+    % comparing the predicted labels to the actual labels and calculating 
+    % the proportion of correct predictions
     accuracy = sum(predictedLabels == actualLabels) / numel(actualLabels);
     disp(['Accuracy: ', num2str(accuracy)]);
     
-    % Confusion matrix
+    % Confusion matrix - showing how many predictions are correct versus
+    % incorrect for each class
     figure;
     confusionchart(actualLabels, predictedLabels);
-    saveas(gcf, '../results/confusionMatrix.png');
+    saveas(gcf, '../results/confusionMatrix.png'); % Save the confusion matrix as png to results directoru
     title('Confusion Matrix');
     
     % Calculate additional performance metrics
@@ -23,7 +26,8 @@ function testModel(model, testData)
         f1Score(i) = 2 * ((precision(i)*recall(i)) / (precision(i) + recall(i)));
     end
     
-    % Precision-Recall Curve
+    % Precision-Recall Curve - shows the trade-off between precision and recall
+    % for different thresholds
     figure;
     plot(recall, precision, '-o');
     xlabel('Recall');
@@ -33,19 +37,18 @@ function testModel(model, testData)
     saveas(gcf, '../results/precisionRecallCurve.png');
 
    
-
-    % Accuracy vs. Label Frequency Graph
+ 
+    % Accuracy vs. Label Frequency Graph - compares the accuracy of each
+    % class against its frequency in the dataset
     labelCounts = countcats(actualLabels);
     labelAccuracy = zeros(length(order),1);
     for i = 1:length(order)
         labelAccuracy(i) = confMat(i,i) / sum(confMat(i,:));
     end
-    
     figure;
     yyaxis left;
     bar(labelCounts);
     ylabel('Frequency');
-    
     yyaxis right;
     plot(labelAccuracy, '-o', 'LineWidth',2, 'MarkerSize',10);
     ylabel('Accuracy');
@@ -57,10 +60,9 @@ function testModel(model, testData)
     saveas(gcf, '../results/accuracyVsLabelFrequency.png');
 
 
-
-    % Visualization of some classified images
+    % Visualization of some classified images (predicted and actual labels)
     uniqueLabels = unique(actualLabels);
-    numLabelsToVisualizePerCategory = 5; % Adjust as needed to ensure balance
+    numLabelsToVisualizePerCategory = 5; 
     
     for label = uniqueLabels'
         idxs = find(actualLabels == label, numLabelsToVisualizePerCategory, 'first');

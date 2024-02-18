@@ -9,14 +9,14 @@
 % * It leverages pre-trained object detection models for detecting objects
 % and a custom-trained model for classification.
 
-% Clearing the workspace and console
-% Main.m - Main script to run the object detection and classification project.
 
-% Clear the MATLAB workspace, close all figures, and clear command window 
-% This will ensure a clean start
+% Main script to run the object detection and classification project.
+
+% Clearing the MATLAB workspace, closing all figures, and clearing command 
+% window 
 clear; close all; clc;
 
-% Add paths to the datasets
+% Add paths to the datasets and where model will be saved
 datasetPath = '../DATASET/'; % Relative path to the dataset directory
 modelsPath = '../models/'; % Relative path to where custome trained models are stored
 
@@ -57,7 +57,7 @@ else
     disp('No existing model found. Training the model...');
     model = trainModel(trainData, testData);
     
-    Save the newly trained model for later use
+    % Save the newly trained model for later use
     disp(['Saving the trained model to: ', modelFilePath]);
     save(modelFilePath, 'model');
 end
@@ -75,6 +75,7 @@ testModel(model, testData); % This function should also calculate and display pe
 % your computer (really laggy)
 % Therefore, give user (instructor/TA) a choice
 
+% Object detection model selection
 validInput = false;
 while ~validInput
     disp('Select a pre-trained object detection model:');
@@ -111,6 +112,4 @@ preprocessVideo(videoDevice, detector, model); % Updated to pass the detector as
 
 % Releasing the webcam after use
 clear('videoDevice');
-
-
 disp('Project execution completed.');
