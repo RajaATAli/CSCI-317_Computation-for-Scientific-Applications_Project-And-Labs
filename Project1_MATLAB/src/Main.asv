@@ -1,9 +1,12 @@
 % --------------------------------------
 % Author: Raja Allmdar Tariq Ali
 % Date: 02/18/24
+% Major: BS Computer Science
 % --------------------------------------
-% Object Detection and Classification Project to sort projects into either
-% waste or recycling
+
+% This project aims to detect and classify objects into either recyclable (R) or organic (O) categories
+% using real-time video processing. It leverages pre-trained object detection models for detecting objects
+% and a custom-trained model for classification.
 
 % Clearing the workspace and console
 % Main.m - Main script to run the object detection and classification project.
@@ -36,28 +39,24 @@ model = model.model; % Ensure the model variable is correctly extracted
 
 % Test the model
 disp('Testing the model...');
-testModel(model, testData); % This function should also calculate and display performance metrics
+%testModel(model, testData); % This function should also calculate and display performance metrics
+
+
+% Choose the model
+modelName = 'darknet53-coco'; % or 'darknet53-coco' for the full model
+% tiny-yolov3-coco for the minimized model 
+
+% Create the YOLO v3 object detector
+detector = yolov3ObjectDetector(modelName);
 
 % Optional: Real-time video processing setup
 disp('Setting up real-time video processing...');
 videoDevice = webcam; % Requires the Webcam Support Package
 
 
-
-% Object Detection
-% Choose the model
-modelName = 'tiny-yolov3-coco'; % or 'darknet53-coco' for the full model
-
-% Create the YOLO v3 object detector
-detector = yolov3ObjectDetector(modelName);
-
-
-
-
-
 % Assuming the model has already been trained, loaded, and is ready
 disp('Starting real-time classification...');
-preprocessVideo(videoDevice, model);
+preprocessVideo(videoDevice, detector, model); % Updated to pass the detector as well
 
 % Remember to release the webcam after use
 clear('videoDevice');
