@@ -75,25 +75,25 @@ testModel(model, testData); % This function should also calculate and display pe
 % your computer (really laggy)
 % Therefore, give user (instructor/TA) a choice
 
-% Display information about available models to the user
-disp('Select a pre-trained object detection model:');
-disp('1: tiny-yolov3-coco - A minimized model, faster but less accurate, suitable for real-time applications on limited hardware (i.e. fast)');
-disp('2: darknet53-coco - The full model, more computationally intensive but provides higher accuracy, suitable for applications where detection precision is critical. (i.e. better for the classifcation model but might be slow depending on the hardware you are using');
-
-% Prompt user for model selection
-modelChoice = input('Enter the model number (1 or 2): ');
-
-% Determine the model based on user input
-switch modelChoice
-    case 1
-        modelName = 'tiny-yolov3-coco';
-        disp('Selected model: tiny-yolov3-coco');
-    case 2
-        modelName = 'darknet53-coco';
-        disp('Selected model: darknet53-coco');
-    otherwise
-        error('Invalid selection. Please restart and select either 1 or 2.');
+validInput = false;
+while ~validInput
+    disp('Select a pre-trained object detection model:');
+    disp('1: tiny-yolov3-coco - A minimized model, faster but less accurate.');
+    disp('2: darknet53-coco - The full model, more accurate but slower.');
+    modelChoice = input('Enter the model number (1 or 2): ');
+    
+    switch modelChoice
+        case 1
+            modelName = 'tiny-yolov3-coco';
+            validInput = true;
+        case 2
+            modelName = 'darknet53-coco';
+            validInput = true;
+        otherwise
+            disp('Invalid selection. Please enter 1 or 2.');
+    end
 end
+
 
 % Create the YOLO v3 object detector with the chosen model
 disp(['Creating the YOLO v3 object detector with the ', modelName, ' model...']);

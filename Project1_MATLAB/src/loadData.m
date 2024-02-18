@@ -3,7 +3,8 @@ function [trainData, testData] = loadData(datasetDir)
     trainDir = fullfile(datasetDir, 'TRAIN');
     testDir = fullfile(datasetDir, 'TEST');
     
-    % Use imageDatastore to load images and their labels, with preprocessing and debugging
+    % Use imageDatastore to load images and their labels, with
+    % preprocessing for debugging purposes
     trainData = imageDatastore(trainDir, ...
         'IncludeSubfolders', true, 'LabelSource', 'foldernames', ...
         'ReadFcn', @(filename)checkPreprocessData(imread(filename)));
