@@ -29,30 +29,9 @@ function testModel(model, testData)
     ylabel('Precision');
     title('Precision-Recall Curve');
     grid on;
-   
-
-    % Accuracy vs. Label Frequency Graph
-    labelCounts = countcats(actualLabels);
-    labelAccuracy = zeros(length(order),1);
-    for i = 1:length(order)
-        labelAccuracy(i) = confMat(i,i) / sum(confMat(i,:));
-    end
     
-    figure;
-    yyaxis left;
-    bar(labelCounts);
-    ylabel('Frequency');
+  
     
-    yyaxis right;
-    plot(labelAccuracy, '-o', 'LineWidth',2, 'MarkerSize',10);
-    ylabel('Accuracy');
-    xlabel('Labels');
-    set(gca, 'xticklabels', order);
-    title('Accuracy vs. Label Frequency');
-    grid on;
-    legend('Frequency', 'Accuracy', 'Location', 'best');
-
-
     % Visualization of some classified images
     uniqueLabels = unique(actualLabels);
     numLabelsToVisualizePerCategory = 5; % Adjust as needed to ensure balance
