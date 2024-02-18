@@ -10,15 +10,21 @@ function testModel(model, testData)
     % Confusion matrix
     figure;
     confusionchart(actualLabels, predictedLabels);
-
-     % Visualize first 10 predictions
-    for i = 1:min(10, numel(actualLabels)) % Ensure it doesn't exceed available data
-        img = readimage(testData, i);
-        actualLabel = actualLabels(i);
-        predictedLabel = predictedLabels(i);
-        
-        figure;
-        imshow(img);
-        title(['Predicted: ' char(predictedLabel) ', Actual: ' char(actualLabel)]);
+    
+     % Ensure visualization includes both categories
+    uniqueLabels = unique(actualLabels);
+    numLabelsToVisualizePerCategory = 5; % Adjust as needed to ensure balance
+    
+    for label = uniqueLabels'
+        idxs = find(actualLabels == label, numLabelsToVisualizePerCategory, 'first');
+        for idx = idxs'
+            img = readimage(testData, idx);
+            actualLabel = actualLabels(idx);
+            predictedLabel = predictedLabels(idx);
+            
+            figure;
+            imshow(img);
+            title(['Predicted: ' char(predictedLabel) ', Actual: ' char(actualLabel)]);
+        end
     end
 end
