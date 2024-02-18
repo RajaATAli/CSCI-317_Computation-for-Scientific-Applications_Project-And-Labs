@@ -1,4 +1,3 @@
-% preprocessVideo.m
 function preprocessVideo(videoDevice, detector, classificationModel)
     figure; % Create a figure for displaying video frames
     while true
