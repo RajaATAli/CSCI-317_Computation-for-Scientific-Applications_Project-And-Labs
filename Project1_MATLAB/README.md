@@ -35,4 +35,5 @@ The `testModel.m` script evaluates the trained model on the test dataset, provid
 All the graphs generated from `testModel.m` are saved in the `results` directory.
 
 ## Demo
-results/Demo_README.mov
+
+![Demo GIF](results/Demo_README.gif)
