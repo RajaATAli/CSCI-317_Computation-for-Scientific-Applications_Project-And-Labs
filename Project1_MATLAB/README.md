@@ -33,3 +33,6 @@ After training, the project uses your webcam to capture video frames in real-tim
 ### Testing the Model
 The `testModel.m` script evaluates the trained model on the test dataset, providing metrics such as accuracy, precision, recall, and generates a confusion matrix along with precision-recall and Accuracy vs. Label Frequency graphs for performance analysis.
 All the graphs generated from `testModel.m` are saved in the `results` directory.
+
+## Demo
+results/Demo_README.mov
