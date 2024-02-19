@@ -36,4 +36,7 @@ All the graphs generated from `testModel.m` are saved in the `results` directory
 
 ## Demo
 
-![Demo GIF](results/Demo_README.gif)
+<p align="center">
+  <img src="results/Demo_README.gif" width="640" height="480" />
+</p>
+
