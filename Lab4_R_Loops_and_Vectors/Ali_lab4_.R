@@ -36,7 +36,7 @@ for (i in 1:length(products)) {
   cat(sprintf('Product = %s; Price ($) = %.2f; Quantity = %d\n', products[i], price[i], quantity_2017[i]))
   sumproducts <- sumproducts + price[i]
 }
-
+# Calculating and displaying the average price of all products, using the total sum of all prices divided by the number of products
 avgPriceAllProducts <- sumproducts / length(products)
 cat(sprintf('\nThis is the average price of all products ($) = %.3f\n', avgPriceAllProducts))
 
@@ -66,6 +66,7 @@ for (i in 1:length(products)) {
   totalIncomeAll <- totalIncomeAll + income
 }
 
+# Displaying the total income generated from all sales, summed up in the previous loop
 cat(sprintf('\nTotal Income from All Sales ($): %f\n', totalIncomeAll))
 
 # Debug step to check if total income from All Sales is correct
