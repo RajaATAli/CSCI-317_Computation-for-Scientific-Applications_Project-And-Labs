@@ -1,0 +1,17 @@
+"rules" "support" "confidence" "coverage" "lift" "count"
+"1" "{plas=Low} => {class=tested_negative}" 0.235677083333333 0.918781725888325 0.256510416666667 1.41124873096447 181
+"2" "{skin=Not Measured} => {insu=Not Measured}" 0.295572916666667 1 0.295572916666667 2.05347593582888 227
+"3" "{plas=Low,insu=Low} => {class=tested_negative}" 0.100260416666667 0.950617283950617 0.10546875 1.46014814814815 77
+"4" "{skin=Not Measured,pedi=Low} => {insu=Not Measured}" 0.1015625 1 0.1015625 2.05347593582888 78
+"5" "{skin=Not Measured,mass=Low} => {insu=Not Measured}" 0.100260416666667 1 0.100260416666667 2.05347593582888 77
+"6" "{mass=Low,age=Young} => {class=tested_negative}" 0.118489583333333 0.978494623655914 0.12109375 1.50296774193548 91
+"7" "{preg=Low,mass=Low} => {class=tested_negative}" 0.125 0.941176470588235 0.1328125 1.44564705882353 96
+"8" "{insu=Not Measured,mass=Low} => {class=tested_negative}" 0.130208333333333 0.900900900900901 0.14453125 1.38378378378378 100
+"9" "{plas=Low,age=Young} => {class=tested_negative}" 0.131510416666667 0.980582524271845 0.134114583333333 1.50617475728155 101
+"10" "{preg=Low,plas=Low} => {class=tested_negative}" 0.131510416666667 0.94392523364486 0.139322916666667 1.4498691588785 101
+"11" "{plas=Low,insu=Not Measured} => {class=tested_negative}" 0.111979166666667 0.914893617021277 0.122395833333333 1.40527659574468 86
+"12" "{skin=Not Measured,class=tested_positive} => {insu=Not Measured}" 0.114583333333333 1 0.114583333333333 2.05347593582888 88
+"13" "{skin=Not Measured,age=Middle-Aged} => {insu=Not Measured}" 0.18359375 1 0.18359375 2.05347593582888 141
+"14" "{skin=Not Measured,class=tested_negative} => {insu=Not Measured}" 0.180989583333333 1 0.180989583333333 2.05347593582888 139
+"15" "{preg=Low,pres=Low,age=Young} => {class=tested_negative}" 0.100260416666667 0.916666666666667 0.109375 1.408 77
+"16" "{skin=Not Measured,age=Middle-Aged,class=tested_negative} => {insu=Not Measured}" 0.100260416666667 1 0.100260416666667 2.05347593582888 77
